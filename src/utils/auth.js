@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 
-const TokenKey = 'zxshop_token'
+const TokenKey = 'admin_token'
 
 export function getToken() {
   return Cookies.get(TokenKey)

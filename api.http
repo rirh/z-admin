@@ -1,0 +1,14 @@
+POST https://e9be6b26-4836-411a-b7a7-a987467041f7.bspapp.com/http/api HTTP/1.1
+Content-Type: application/json
+
+{
+  "url":"account",
+  "action":"sendSmsCode",
+  "check":false,
+  "data":{
+    "mobile":"13683656717",
+    "code":"958844",
+    "type":"register",
+    "templateId":"10005"
+    }
+  }

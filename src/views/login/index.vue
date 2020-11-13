@@ -1,9 +1,16 @@
 <template>
   <div class="login-container">
-    <el-form v-if="state==0" ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-
+    <el-form
+      v-if="state == 0"
+      ref="loginForm"
+      :model="loginForm"
+      :rules="loginRules"
+      class="login-form"
+      auto-complete="on"
+      label-position="left"
+    >
       <div class="title-container">
-        <h3 class="title">zxshop管理端登录</h3>
+        <h3 class="title">登录</h3>
       </div>
 
       <el-form-item prop="username">
@@ -37,28 +44,46 @@
           @keyup.enter.native="handleLogin"
         />
         <span class="show-pwd" @click="showPwd">
-          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+          <svg-icon
+            :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
+          />
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登 录</el-button>
+      <el-button
+        :loading="loading"
+        type="primary"
+        style="width: 100%; margin-bottom: 30px"
+        @click.native.prevent="handleLogin"
+        >登 录</el-button
+      >
 
-      <div style="position:relative">
+      <div style="position: relative">
         <div class="tips">
-          <span>power by zx</span>
+          <span>Power by TigerZH</span>
         </div>
 
-        <el-button class="thirdparty-button" type="primary" @click="toRegister">
+        <el-button
+          size="small"
+          class="thirdparty-button"
+          type="primary"
+          @click="toRegister"
+        >
           免费注册
         </el-button>
       </div>
-
     </el-form>
-
-    <el-form v-else ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-
+    <el-form
+      v-else
+      ref="loginForm"
+      :model="loginForm"
+      :rules="loginRules"
+      class="login-form"
+      auto-complete="on"
+      label-position="left"
+    >
       <div class="title-container">
-        <h3 class="title">现在注册，即可免费体验开店</h3>
+        <h3 class="title">注册</h3>
       </div>
 
       <el-form-item prop="code">
@@ -79,12 +104,14 @@
           trigger="hover"
           title="扫码关注，发送'邀请码'获取"
         >
-          <img class="right-img" style="width:200px;height:200px" :src="dyhUrl">
+          <img
+            class="right-img"
+            style="width: 200px; height: 200px"
+            :src="dyhUrl"
+          />
           <el-button slot="reference" class="right-btn show-pwd">
             <div class="right-item">
-              <span class="show-pwd" style="color:#ffffff">
-                获取邀请码
-              </span>
+              <span class="show-pwd"> 获取邀请码 </span>
             </div>
           </el-button>
         </el-popover>
@@ -119,13 +146,16 @@
           tabindex="2"
           auto-complete="on"
         />
-        <span v-if="!showGetCode" class="show-pwd">
+        <span v-if="!showGetCode" class="show-pwd"> 获取验证码 </span>
+        <span
+          v-if="showGetCode && !showTimeCount"
+          class="show-pwd"
+          style="color: #ffffff"
+          @click="showCode"
+        >
           获取验证码
         </span>
-        <span v-if="showGetCode&&!showTimeCount" class="show-pwd" style="color:#ffffff" @click="showCode">
-          获取验证码
-        </span>
-        <span v-if="showGetCode&&showTimeCount" class="show-pwd">
+        <span v-if="showGetCode && showTimeCount" class="show-pwd">
           {{ timeNum }}
         </span>
       </el-form-item>
@@ -145,225 +175,255 @@
           auto-complete="on"
         />
         <span class="show-pwd" @click="showPwd">
-          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+          <svg-icon
+            :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
+          />
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="startReg">注 册</el-button>
+      <el-button
+        :loading="loading"
+        type="primary"
+        style="width: 100%; margin-bottom: 30px"
+        @click.native.prevent="startReg"
+        >注 册</el-button
+      >
 
-      <div style="position:relative">
+      <div style="position: relative">
         <div class="tips">
-          <span>power by zx</span>
+          <span>Power byTigerZH</span>
         </div>
 
-        <el-button class="thirdparty-button" type="primary" @click="toLogin">
+        <el-button
+          size="small"
+          class="thirdparty-button"
+          type="primary"
+          @click="toLogin"
+        >
           立即登录
         </el-button>
       </div>
-
     </el-form>
   </div>
 </template>
 
 <script>
-import { validPhoneNum } from '@/utils/validate'
-import { sendSmsCode, verifyCode, register } from '@/api/user'
+import { validPhoneNum } from "@/utils/validate";
+import { sendSmsCode, verifyCode, register } from "@/api/user";
 
 export default {
-  name: 'Login',
+  name: "Login",
   data() {
     const validateUsername = (rule, value, callback) => {
       if (this.state === 0) {
         if (!validPhoneNum(value)) {
-          callback(new Error('请输入正确的手机号'))
+          callback(new Error("请输入正确的手机号"));
         } else {
-          callback()
+          callback();
         }
       }
-    }
+    };
     const validatePassword = (rule, value, callback) => {
       if (this.state === 0) {
         if (value.length < 6) {
-          callback(new Error('密码至少6个字符'))
+          callback(new Error("密码至少6个字符"));
         } else {
-          callback()
+          callback();
         }
       }
-    }
+    };
     return {
       loginForm: {
-        username: '',
-        password: ''
+        username: "",
+        password: "",
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        username: [
+          { required: true, trigger: "blur", validator: validateUsername },
+        ],
+        password: [
+          { required: true, trigger: "blur", validator: validatePassword },
+        ],
       },
       loading: false,
-      passwordType: 'password',
+      passwordType: "password",
       redirect: undefined,
       state: 0,
       showGetCode: false,
       showTimeCount: false,
       timeNum: 60,
-      phoneNum: '',
-      code: '',
-      password: '',
-      dyhCode: '',
-      dyhUrl: 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-zxshop/40fa0bc0-1cd6-11eb-8ff1-d5dcf8779628.jpg'
-    }
+      phoneNum: "",
+      code: "",
+      password: "",
+      dyhCode: "",
+      dyhUrl:
+        "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-zxshop/40fa0bc0-1cd6-11eb-8ff1-d5dcf8779628.jpg",
+    };
   },
   watch: {
     $route: {
-      handler: function(route) {
-        this.redirect = route.query && route.query.redirect
+      handler: function (route) {
+        this.redirect = route.query && route.query.redirect;
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
   methods: {
     showPwd() {
-      if (this.passwordType === 'password') {
-        this.passwordType = ''
+      if (this.passwordType === "password") {
+        this.passwordType = "";
       } else {
-        this.passwordType = 'password'
+        this.passwordType = "password";
       }
       this.$nextTick(() => {
-        this.$refs.password.focus()
-      })
+        this.$refs.password.focus();
+      });
     },
     handleLogin() {
-      if (this.loginForm.username === 'admin') {
-        this.loading = true
-        this.$store.dispatch('user/adminLogin', this.loginForm).then(() => {
-          this.$router.push({ path: '/admin/adminDashboard' })
-          this.loading = false
-        }).catch((e) => {
-          console.log(e)
-          this.loading = false
-        })
+      if (this.loginForm.username === "admin") {
+        this.loading = true;
+        this.$store
+          .dispatch("user/adminLogin", this.loginForm)
+          .then(() => {
+            this.$router.push({ path: "/admin/adminDashboard" });
+            this.loading = false;
+          })
+          .catch((e) => {
+            console.log(e);
+            this.loading = false;
+          });
       } else {
-        this.$refs.loginForm.validate(valid => {
+        this.$refs.loginForm.validate((valid) => {
           if (valid) {
-            this.loading = true
-            this.$store.dispatch('user/login', this.loginForm).then(() => {
-              this.$router.push({ path: this.redirect || '/' })
-              this.loading = false
-            }).catch((e) => {
-              console.log(e)
-              this.loading = false
-            })
+            this.loading = true;
+            this.$store
+              .dispatch("user/login", this.loginForm)
+              .then(() => {
+                this.$router.push({ path: this.redirect || "/" });
+                this.loading = false;
+              })
+              .catch((e) => {
+                console.log(e);
+                this.loading = false;
+              });
           } else {
-            console.log('error submit!!')
-            return false
+            console.log("error submit!!");
+            return false;
           }
-        })
+        });
       }
     },
     startReg() {
-      if (this.dyhCode.length !== 4 && this.dyhCode.length !== 1588 && this.dyhCode.length !== 5858 && this.dyhCode.length !== 6868) {
-        this.$message.error('邀请码不正确')
-        return false
+      if (
+        this.dyhCode.length !== 4 &&
+        this.dyhCode.length !== 1588 &&
+        this.dyhCode.length !== 5858 &&
+        this.dyhCode.length !== 6868
+      ) {
+        this.$message.error("邀请码不正确");
+        return false;
       }
       if (!/^1\d{10}$/.test(this.phoneNum)) {
-        this.$message.error('手机号码格式不正确')
-        return false
+        this.$message.error("手机号码格式不正确");
+        return false;
       }
       if (this.code.length !== 6) {
-        this.$message.error('验证码不正确')
-        return false
+        this.$message.error("验证码不正确");
+        return false;
       }
       if (this.password.length < 6) {
-        this.$message.error('密码至少6位')
-        return false
+        this.$message.error("密码至少6位");
+        return false;
       }
       const req = {
         mobile: this.phoneNum,
         code: this.code,
-        type: 'register'
-      }
-      verifyCode(req).then(response => {
+        type: "register",
+      };
+      verifyCode(req).then((response) => {
         if (response.code === 0) {
           const req2 = {
             username: this.phoneNum,
-            password: this.password
-          }
-          register(req2).then(res => {
+            password: this.password,
+          };
+          register(req2).then((res) => {
             if (res.code === 0) {
-              console.log(res)
+              console.log(res);
               this.$message({
-                message: '恭喜你，注册成功',
-                type: 'success'
-              })
-              this.phoneNum = ''
-              this.password = ''
-              this.code = ''
-              this.showGetCode = false
-              this.showTimeCount = false
-              this.state = 0
+                message: "恭喜你，注册成功",
+                type: "success",
+              });
+              this.phoneNum = "";
+              this.password = "";
+              this.code = "";
+              this.showGetCode = false;
+              this.showTimeCount = false;
+              this.state = 0;
             }
-          })
+          });
         }
-      })
+      });
     },
     toRegister() {
-      this.state = 1
+      this.state = 1;
     },
     toLogin() {
-      this.state = 0
+      this.state = 0;
     },
     onPhoneNumChange(v) {
       if (!validPhoneNum(v)) {
-        this.showGetCode = false
+        this.showGetCode = false;
       } else {
-        this.showGetCode = true
+        this.showGetCode = true;
       }
     },
     showCode() {
-      this.timeNum = 60
-      const randomStr = '00000' + Math.floor(Math.random() * 1000000)
+      this.timeNum = 60;
+      const randomStr = "00000" + Math.floor(Math.random() * 1000000);
       const req = {
         mobile: this.phoneNum,
         code: randomStr.substring(randomStr.length - 6),
-        type: 'register'
-      }
-      sendSmsCode(req).then(response => {
-        console.log(response)
+        type: "register",
+      };
+      sendSmsCode(req).then((response) => {
+        console.log(response);
         this.$message({
-          message: '验证码已发送',
-          type: 'success'
-        })
-      })
-      this.showTimeCount = true
-      var that = this
-      var timeClock = setInterval(function() {
-        that.timeNum = that.timeNum - 1
+          message: "验证码已发送",
+          type: "success",
+        });
+      });
+      this.showTimeCount = true;
+      var that = this;
+      var timeClock = setInterval(function () {
+        that.timeNum = that.timeNum - 1;
         if (that.timeNum === 0) {
-          that.showTimeCount = false
-          clearInterval(timeClock)
+          that.showTimeCount = false;
+          clearInterval(timeClock);
         }
-      }, 1000)
-    }
-  }
-}
+      }, 1000);
+    },
+  },
+};
 </script>
 
 <style lang="scss">
 /* 修复input 背景不协调 和光标变色 */
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
-$bg:#283443;
-$light_gray:#fff;
-$cursor: #fff;
+$bg: #283443;
+$cursor: #333;
+$dark_gray: #333;
+$light_gray: #333;
 
-@supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
-  .login-container .el-input input {
-    color: $cursor;
-  }
-}
+// @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
+//   .login-container .el-input input {
+//     color: $cursor;
+//   }
+// }
 
 /* reset element-ui css */
 .login-container {
+  background-image: url(https://vkceyugu.cdn.bspapp.com/VKCEYUGU-aliyun-vou8sjcjysto19584c/21daee90-258b-11eb-b997-9918a5dda011.jpg);
   .el-input {
     display: inline-block;
     height: 47px;
@@ -379,10 +439,10 @@ $cursor: #fff;
       height: 47px;
       caret-color: $cursor;
 
-      &:-webkit-autofill {
-        box-shadow: 0 0 0px 1000px $bg inset !important;
-        -webkit-text-fill-color: $cursor !important;
-      }
+      // &:-webkit-autofill {
+      // box-shadow: 0 0 0px 1000px #fff inset !important;
+      // -webkit-text-fill-color: #fff !important;
+      // }
     }
   }
 
@@ -390,15 +450,9 @@ $cursor: #fff;
     border: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(0, 0, 0, 0.1);
     border-radius: 5px;
-    color: #454545;
+    color: #333;
   }
 }
-</style>
-
-<style lang="scss" scoped>
-$bg:#2d3a4b;
-$dark_gray:#889aa4;
-$light_gray:#eee;
 
 .login-container {
   min-height: 100%;
@@ -410,14 +464,21 @@ $light_gray:#eee;
     position: relative;
     width: 520px;
     max-width: 100%;
-    padding: 160px 35px 0;
-    margin: 0 auto;
+    // padding: 160px 35px 0;
+    margin-left: 60vw;
     overflow: hidden;
+    padding: 20px 35px;
+    margin-top: 160px;
+    background-color: white;
+    border-radius: 10px;
+    opacity: 0.9;
+    box-shadow: 0px 3px 3px -2px rgba(0, 0, 0, 0.2),
+      0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
   }
 
   .tips {
     font-size: 15px;
-    color: #fff;
+    color: #333;
     margin-bottom: 10px;
 
     span {
@@ -449,8 +510,7 @@ $light_gray:#eee;
   .thirdparty-button {
     position: absolute;
     right: 0;
-    bottom : -8px;
-
+    bottom: -8px;
   }
 
   .show-pwd {
@@ -462,10 +522,10 @@ $light_gray:#eee;
     cursor: pointer;
     user-select: none;
   }
-  .right-btn{
+  .right-btn {
     width: 100px;
     border: 0px;
-    top:11px;
+    top: 11px;
     right: 0px;
     opacity: 0.85;
     background-color: transparent;

@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: 'zxshop',
+  title: 'admin',
 
   /**
    * @type {boolean} true | false
