@@ -1,0 +1,474 @@
+<template>
+  <div class="login-container">
+    <el-form v-if="state==0" ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+
+      <div class="title-container">
+        <h3 class="title">zxshop管理端登录</h3>
+      </div>
+
+      <el-form-item prop="username">
+        <span class="svg-container">
+          <svg-icon icon-class="user" />
+        </span>
+        <el-input
+          ref="username"
+          v-model="loginForm.username"
+          placeholder="手机号"
+          name="username"
+          type="text"
+          tabindex="1"
+          auto-complete="on"
+        />
+      </el-form-item>
+
+      <el-form-item prop="password">
+        <span class="svg-container">
+          <svg-icon icon-class="password" />
+        </span>
+        <el-input
+          :key="passwordType"
+          ref="password"
+          v-model="loginForm.password"
+          :type="passwordType"
+          placeholder="密码"
+          name="password"
+          tabindex="2"
+          auto-complete="on"
+          @keyup.enter.native="handleLogin"
+        />
+        <span class="show-pwd" @click="showPwd">
+          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+        </span>
+      </el-form-item>
+
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登 录</el-button>
+
+      <div style="position:relative">
+        <div class="tips">
+          <span>power by zx</span>
+        </div>
+
+        <el-button class="thirdparty-button" type="primary" @click="toRegister">
+          免费注册
+        </el-button>
+      </div>
+
+    </el-form>
+
+    <el-form v-else ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+
+      <div class="title-container">
+        <h3 class="title">现在注册，即可免费体验开店</h3>
+      </div>
+
+      <el-form-item prop="code">
+        <span class="svg-container">
+          <svg-icon icon-class="nested" />
+        </span>
+        <el-input
+          ref="dyhCode"
+          v-model="dyhCode"
+          type="text"
+          placeholder="邀请码"
+          name="dyhCode"
+          tabindex="2"
+          auto-complete="on"
+        />
+        <el-popover
+          placement="left-start"
+          trigger="hover"
+          title="扫码关注，发送'邀请码'获取"
+        >
+          <img class="right-img" style="width:200px;height:200px" :src="dyhUrl">
+          <el-button slot="reference" class="right-btn show-pwd">
+            <div class="right-item">
+              <span class="show-pwd" style="color:#ffffff">
+                获取邀请码
+              </span>
+            </div>
+          </el-button>
+        </el-popover>
+      </el-form-item>
+
+      <el-form-item prop="username">
+        <span class="svg-container">
+          <svg-icon icon-class="user" />
+        </span>
+        <el-input
+          ref="phoneNum"
+          v-model="phoneNum"
+          placeholder="手机号"
+          name="phoneNum"
+          type="text"
+          tabindex="1"
+          auto-complete="on"
+          @input="onPhoneNumChange"
+        />
+      </el-form-item>
+
+      <el-form-item prop="code">
+        <span class="svg-container">
+          <svg-icon icon-class="link" />
+        </span>
+        <el-input
+          ref="code"
+          v-model="code"
+          type="text"
+          placeholder="验证码"
+          name="password"
+          tabindex="2"
+          auto-complete="on"
+        />
+        <span v-if="!showGetCode" class="show-pwd">
+          获取验证码
+        </span>
+        <span v-if="showGetCode&&!showTimeCount" class="show-pwd" style="color:#ffffff" @click="showCode">
+          获取验证码
+        </span>
+        <span v-if="showGetCode&&showTimeCount" class="show-pwd">
+          {{ timeNum }}
+        </span>
+      </el-form-item>
+
+      <el-form-item prop="password">
+        <span class="svg-container">
+          <svg-icon icon-class="password" />
+        </span>
+        <el-input
+          :key="passwordType"
+          ref="password"
+          v-model="password"
+          :type="passwordType"
+          placeholder="密码"
+          name="password"
+          tabindex="2"
+          auto-complete="on"
+        />
+        <span class="show-pwd" @click="showPwd">
+          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+        </span>
+      </el-form-item>
+
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="startReg">注 册</el-button>
+
+      <div style="position:relative">
+        <div class="tips">
+          <span>power by zx</span>
+        </div>
+
+        <el-button class="thirdparty-button" type="primary" @click="toLogin">
+          立即登录
+        </el-button>
+      </div>
+
+    </el-form>
+  </div>
+</template>
+
+<script>
+import { validPhoneNum } from '@/utils/validate'
+import { sendSmsCode, verifyCode, register } from '@/api/user'
+
+export default {
+  name: 'Login',
+  data() {
+    const validateUsername = (rule, value, callback) => {
+      if (this.state === 0) {
+        if (!validPhoneNum(value)) {
+          callback(new Error('请输入正确的手机号'))
+        } else {
+          callback()
+        }
+      }
+    }
+    const validatePassword = (rule, value, callback) => {
+      if (this.state === 0) {
+        if (value.length < 6) {
+          callback(new Error('密码至少6个字符'))
+        } else {
+          callback()
+        }
+      }
+    }
+    return {
+      loginForm: {
+        username: '',
+        password: ''
+      },
+      loginRules: {
+        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+      },
+      loading: false,
+      passwordType: 'password',
+      redirect: undefined,
+      state: 0,
+      showGetCode: false,
+      showTimeCount: false,
+      timeNum: 60,
+      phoneNum: '',
+      code: '',
+      password: '',
+      dyhCode: '',
+      dyhUrl: 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-zxshop/40fa0bc0-1cd6-11eb-8ff1-d5dcf8779628.jpg'
+    }
+  },
+  watch: {
+    $route: {
+      handler: function(route) {
+        this.redirect = route.query && route.query.redirect
+      },
+      immediate: true
+    }
+  },
+  methods: {
+    showPwd() {
+      if (this.passwordType === 'password') {
+        this.passwordType = ''
+      } else {
+        this.passwordType = 'password'
+      }
+      this.$nextTick(() => {
+        this.$refs.password.focus()
+      })
+    },
+    handleLogin() {
+      if (this.loginForm.username === 'admin') {
+        this.loading = true
+        this.$store.dispatch('user/adminLogin', this.loginForm).then(() => {
+          this.$router.push({ path: '/admin/adminDashboard' })
+          this.loading = false
+        }).catch((e) => {
+          console.log(e)
+          this.loading = false
+        })
+      } else {
+        this.$refs.loginForm.validate(valid => {
+          if (valid) {
+            this.loading = true
+            this.$store.dispatch('user/login', this.loginForm).then(() => {
+              this.$router.push({ path: this.redirect || '/' })
+              this.loading = false
+            }).catch((e) => {
+              console.log(e)
+              this.loading = false
+            })
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        })
+      }
+    },
+    startReg() {
+      if (this.dyhCode.length !== 4 && this.dyhCode.length !== 1588 && this.dyhCode.length !== 5858 && this.dyhCode.length !== 6868) {
+        this.$message.error('邀请码不正确')
+        return false
+      }
+      if (!/^1\d{10}$/.test(this.phoneNum)) {
+        this.$message.error('手机号码格式不正确')
+        return false
+      }
+      if (this.code.length !== 6) {
+        this.$message.error('验证码不正确')
+        return false
+      }
+      if (this.password.length < 6) {
+        this.$message.error('密码至少6位')
+        return false
+      }
+      const req = {
+        mobile: this.phoneNum,
+        code: this.code,
+        type: 'register'
+      }
+      verifyCode(req).then(response => {
+        if (response.code === 0) {
+          const req2 = {
+            username: this.phoneNum,
+            password: this.password
+          }
+          register(req2).then(res => {
+            if (res.code === 0) {
+              console.log(res)
+              this.$message({
+                message: '恭喜你，注册成功',
+                type: 'success'
+              })
+              this.phoneNum = ''
+              this.password = ''
+              this.code = ''
+              this.showGetCode = false
+              this.showTimeCount = false
+              this.state = 0
+            }
+          })
+        }
+      })
+    },
+    toRegister() {
+      this.state = 1
+    },
+    toLogin() {
+      this.state = 0
+    },
+    onPhoneNumChange(v) {
+      if (!validPhoneNum(v)) {
+        this.showGetCode = false
+      } else {
+        this.showGetCode = true
+      }
+    },
+    showCode() {
+      this.timeNum = 60
+      const randomStr = '00000' + Math.floor(Math.random() * 1000000)
+      const req = {
+        mobile: this.phoneNum,
+        code: randomStr.substring(randomStr.length - 6),
+        type: 'register'
+      }
+      sendSmsCode(req).then(response => {
+        console.log(response)
+        this.$message({
+          message: '验证码已发送',
+          type: 'success'
+        })
+      })
+      this.showTimeCount = true
+      var that = this
+      var timeClock = setInterval(function() {
+        that.timeNum = that.timeNum - 1
+        if (that.timeNum === 0) {
+          that.showTimeCount = false
+          clearInterval(timeClock)
+        }
+      }, 1000)
+    }
+  }
+}
+</script>
+
+<style lang="scss">
+/* 修复input 背景不协调 和光标变色 */
+/* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
+
+$bg:#283443;
+$light_gray:#fff;
+$cursor: #fff;
+
+@supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
+  .login-container .el-input input {
+    color: $cursor;
+  }
+}
+
+/* reset element-ui css */
+.login-container {
+  .el-input {
+    display: inline-block;
+    height: 47px;
+    width: 85%;
+
+    input {
+      background: transparent;
+      border: 0px;
+      -webkit-appearance: none;
+      border-radius: 0px;
+      padding: 12px 5px 12px 15px;
+      color: $light_gray;
+      height: 47px;
+      caret-color: $cursor;
+
+      &:-webkit-autofill {
+        box-shadow: 0 0 0px 1000px $bg inset !important;
+        -webkit-text-fill-color: $cursor !important;
+      }
+    }
+  }
+
+  .el-form-item {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    color: #454545;
+  }
+}
+</style>
+
+<style lang="scss" scoped>
+$bg:#2d3a4b;
+$dark_gray:#889aa4;
+$light_gray:#eee;
+
+.login-container {
+  min-height: 100%;
+  width: 100%;
+  background-color: $bg;
+  overflow: hidden;
+
+  .login-form {
+    position: relative;
+    width: 520px;
+    max-width: 100%;
+    padding: 160px 35px 0;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  .tips {
+    font-size: 15px;
+    color: #fff;
+    margin-bottom: 10px;
+
+    span {
+      &:first-of-type {
+        margin-right: 16px;
+      }
+    }
+  }
+
+  .svg-container {
+    padding: 6px 5px 6px 15px;
+    color: $dark_gray;
+    vertical-align: middle;
+    width: 30px;
+    display: inline-block;
+  }
+
+  .title-container {
+    position: relative;
+
+    .title {
+      font-size: 26px;
+      color: $light_gray;
+      margin: 0px auto 40px auto;
+      text-align: center;
+      font-weight: bold;
+    }
+  }
+  .thirdparty-button {
+    position: absolute;
+    right: 0;
+    bottom : -8px;
+
+  }
+
+  .show-pwd {
+    position: absolute;
+    right: 10px;
+    top: 7px;
+    font-size: 16px;
+    color: $dark_gray;
+    cursor: pointer;
+    user-select: none;
+  }
+  .right-btn{
+    width: 100px;
+    border: 0px;
+    top:11px;
+    right: 0px;
+    opacity: 0.85;
+    background-color: transparent;
+  }
+}
+</style>
