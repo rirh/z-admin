@@ -150,7 +150,7 @@
         <span
           v-if="showGetCode && !showTimeCount"
           class="show-pwd"
-          style="color: #ffffff"
+          style="color: #333; font-weight: bold"
           @click="showCode"
         >
           获取验证码
@@ -209,7 +209,7 @@
 
 <script>
 import { validPhoneNum } from "@/utils/validate";
-import { sendSmsCode, verifyCode, register } from "@/api/user";
+import { sendSmsCode, verifyCode, register, iso } from "@/api/user";
 
 export default {
   name: "Login",
@@ -259,6 +259,12 @@ export default {
       dyhUrl:
         "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-zxshop/40fa0bc0-1cd6-11eb-8ff1-d5dcf8779628.jpg",
     };
+  },
+  async mounted() {
+    const result = await iso({
+      name: "iso",
+    });
+    console.log(result.iso);
   },
   watch: {
     $route: {

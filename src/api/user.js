@@ -1,15 +1,15 @@
 import request from '@/utils/request'
-import { getToken } from '@/utils/auth'
+// import { getToken } from '@/utils/auth'
 
 export function login(data) {
   const req = {
-    url: 'account',
+    url: 'user-center',
     action: 'login',
     check: false,
     data: data
   }
   return request({
-    url: '',
+    url: req.url,
     method: 'post',
     data: req
   })
@@ -38,17 +38,10 @@ export function getInfo(token) {
 }
 
 export function logout(data) {
-  const req = {
-    url: 'account',
-    action: 'logout',
-    check: false,
-    uniIdToken: getToken(),
-    data: data
-  }
   return request({
-    url: '',
+    url: data.name,
     method: 'post',
-    data: req
+    data: data
   })
 }
 
@@ -93,3 +86,12 @@ export function register(data) {
     data: req
   })
 }
+
+export function iso(data) {
+  return request({
+    url: data.name,
+    method: 'post',
+    data: data
+  })
+}
+
