@@ -57,18 +57,13 @@
         @click.native.prevent="handleLogin"
         >登 录</el-button
       >
-
       <div style="position: relative">
         <div class="tips">
-          <span>Power by TigerZH</span>
+          <span>Power by TigerZH </span>
+          <span>{{ time }}</span>
         </div>
 
-        <el-button
-          size="small"
-          class="thirdparty-button"
-          type="primary"
-          @click="toRegister"
-        >
+        <el-button size="small" class="thirdparty-button" @click="toRegister">
           免费注册
         </el-button>
       </div>
@@ -102,7 +97,7 @@
         <el-popover
           placement="left-start"
           trigger="hover"
-          title="扫码关注，发送'邀请码'获取"
+          title="扫码关注发送'邀请码'获取"
         >
           <img
             class="right-img"
@@ -124,7 +119,7 @@
         <el-input
           ref="phoneNum"
           v-model="phoneNum"
-          placeholder="手机号"
+          placeholder="邮箱/手机号"
           name="phoneNum"
           type="text"
           tabindex="1"
@@ -191,15 +186,11 @@
 
       <div style="position: relative">
         <div class="tips">
-          <span>Power byTigerZH</span>
+          <span>Power by TigerZH </span>
+          <span>{{ time }}</span>
         </div>
 
-        <el-button
-          size="small"
-          class="thirdparty-button"
-          type="primary"
-          @click="toLogin"
-        >
+        <el-button size="small" class="thirdparty-button" @click="toLogin">
           立即登录
         </el-button>
       </div>
@@ -208,7 +199,7 @@
 </template>
 
 <script>
-import { validPhoneNum } from "@/utils/validate";
+import { validPhoneNum, validEmail } from "@/utils/validate";
 import { sendSmsCode, verifyCode, register, iso } from "@/api/user";
 
 export default {
@@ -216,7 +207,7 @@ export default {
   data() {
     const validateUsername = (rule, value, callback) => {
       if (this.state === 0) {
-        if (!validPhoneNum(value)) {
+        if (!validPhoneNum(value) || validEmail(value)) {
           callback(new Error("请输入正确的手机号"));
         } else {
           callback();
@@ -256,15 +247,16 @@ export default {
       code: "",
       password: "",
       dyhCode: "",
+      time: "",
       dyhUrl:
-        "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-zxshop/40fa0bc0-1cd6-11eb-8ff1-d5dcf8779628.jpg",
+        "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-aliyun-vou8sjcjysto19584c/caee8840-27eb-11eb-8a36-ebb87efcf8c0.jpg",
     };
   },
   async mounted() {
     const result = await iso({
       name: "iso",
     });
-    console.log(result.iso);
+    this.time = result.iso;
   },
   watch: {
     $route: {
@@ -320,15 +312,6 @@ export default {
       }
     },
     startReg() {
-      if (
-        this.dyhCode.length !== 4 &&
-        this.dyhCode.length !== 1588 &&
-        this.dyhCode.length !== 5858 &&
-        this.dyhCode.length !== 6868
-      ) {
-        this.$message.error("邀请码不正确");
-        return false;
-      }
       if (!/^1\d{10}$/.test(this.phoneNum)) {
         this.$message.error("手机号码格式不正确");
         return false;
@@ -351,6 +334,7 @@ export default {
           const req2 = {
             username: this.phoneNum,
             password: this.password,
+            role: [3],
           };
           register(req2).then((res) => {
             if (res.code === 0) {
@@ -377,36 +361,39 @@ export default {
       this.state = 0;
     },
     onPhoneNumChange(v) {
-      if (!validPhoneNum(v)) {
-        this.showGetCode = false;
-      } else {
+      if (!validPhoneNum(v) || !validEmail(v)) {
         this.showGetCode = true;
+      } else {
+        this.showGetCode = false;
       }
     },
     showCode() {
-      this.timeNum = 60;
-      const randomStr = "00000" + Math.floor(Math.random() * 1000000);
       const req = {
-        mobile: this.phoneNum,
-        code: randomStr.substring(randomStr.length - 6),
-        type: "register",
+        email: this.phoneNum,
+        type: "sendEmailCode",
+        name: "user-center",
+        role: [3],
+        my_invite_code: this.dyhCode,
       };
-      sendSmsCode(req).then((response) => {
-        console.log(response);
-        this.$message({
-          message: "验证码已发送",
-          type: "success",
-        });
-      });
-      this.showTimeCount = true;
-      var that = this;
-      var timeClock = setInterval(function () {
-        that.timeNum = that.timeNum - 1;
-        if (that.timeNum === 0) {
-          that.showTimeCount = false;
-          clearInterval(timeClock);
+      sendSmsCode(req).then(({ code, message }) => {
+        if (!code) {
+          this.$message({
+            message: "验证码已发送",
+            type: "success",
+          });
+          this.showTimeCount = true;
+          var that = this;
+          var timeClock = setInterval(function () {
+            that.timeNum = that.timeNum - 1;
+            if (that.timeNum === 0) {
+              that.showTimeCount = false;
+              clearInterval(timeClock);
+            }
+          }, 1000);
+        } else {
+          this.$message.error(message);
         }
-      }, 1000);
+      });
     },
   },
 };
@@ -430,6 +417,9 @@ $light_gray: #333;
 /* reset element-ui css */
 .login-container {
   background-image: url(https://vkceyugu.cdn.bspapp.com/VKCEYUGU-aliyun-vou8sjcjysto19584c/21daee90-258b-11eb-b997-9918a5dda011.jpg);
+  @media only screen and (max-width: 750px) {
+    background-position: right;
+  }
   .el-input {
     display: inline-block;
     height: 47px;
@@ -471,7 +461,7 @@ $light_gray: #333;
     width: 520px;
     max-width: 100%;
     // padding: 160px 35px 0;
-    margin-left: 60vw;
+    margin-left: calc(100vw - (520px + 4%));
     overflow: hidden;
     padding: 20px 35px;
     margin-top: 160px;
@@ -480,12 +470,29 @@ $light_gray: #333;
     opacity: 0.9;
     box-shadow: 0px 3px 3px -2px rgba(0, 0, 0, 0.2),
       0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
+    @media only screen and (max-width: 750px) {
+      width: 90vw;
+      margin-left: 5vw;
+      background-color: #f4f4f4;
+      opacity: 0.98;
+      box-shadow: 3px 6px 6px -2px rgba(0, 0, 0, 0.2),
+        3px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
+    }
   }
 
   .tips {
-    font-size: 15px;
-    color: #333;
-    margin-bottom: 10px;
+    font-size: 12px;
+    color: #666;
+    // margin-bottom: 10px;
+    @media only screen and (max-width: 750px) {
+      font-size: 10px;
+      display: flex;
+      flex-direction: column;
+      // line-height: 15px;
+      align-items: flex-start;
+      justify-content: flex-end;
+      height: 100%;
+    }
 
     span {
       &:first-of-type {

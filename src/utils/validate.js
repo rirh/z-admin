@@ -30,3 +30,16 @@ export function validPhoneNum(str) {
     return true
   }
 }
+
+
+/**
+ * @param {string} str
+ * @returns {Boolean}
+ */
+export function validEmail(str) {
+  if (!(/^\w+((.\w+)|(-\w+))@[A-Za-z0-9]+((.|-)[A-Za-z0-9]+).[A-Za-z0-9]+$/.test(str))) {
+    return false
+  } else {
+    return true
+  }
+}

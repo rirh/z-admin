@@ -5,7 +5,19 @@ export function login(data) {
   const req = {
     url: 'user-center',
     action: 'login',
-    check: false,
+    data: data
+  }
+  return request({
+    url: req.url,
+    method: 'post',
+    data: req
+  })
+}
+
+export function register(data) {
+  const req = {
+    url: 'user-center',
+    action: 'register',
     data: data
   }
   return request({
@@ -46,16 +58,10 @@ export function logout(data) {
 }
 
 export function sendSmsCode(data) {
-  const req = {
-    url: 'account',
-    action: 'sendSmsCode',
-    check: false,
-    data: data
-  }
   return request({
-    url: '',
+    url: data.name,
     method: 'post',
-    data: req
+    data: data
   })
 }
 
@@ -63,20 +69,6 @@ export function verifyCode(data) {
   const req = {
     url: 'account',
     action: 'verifyCode',
-    check: false,
-    data: data
-  }
-  return request({
-    url: '',
-    method: 'post',
-    data: req
-  })
-}
-
-export function register(data) {
-  const req = {
-    url: 'account',
-    action: 'register',
     check: false,
     data: data
   }
