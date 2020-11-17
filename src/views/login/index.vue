@@ -55,8 +55,7 @@
         type="primary"
         style="width: 100%; margin-bottom: 30px"
         @click.native.prevent="handleLogin"
-        >登 录</el-button
-      >
+      >登 录</el-button>
       <div style="position: relative">
         <div class="tips">
           <span>Power by TigerZH </span>
@@ -103,7 +102,7 @@
             class="right-img"
             style="width: 200px; height: 200px"
             :src="dyhUrl"
-          />
+          >
           <el-button slot="reference" class="right-btn show-pwd">
             <div class="right-item">
               <span class="show-pwd"> 获取邀请码 </span>
@@ -181,8 +180,7 @@
         type="primary"
         style="width: 100%; margin-bottom: 30px"
         @click.native.prevent="startReg"
-        >注 册</el-button
-      >
+      >注 册</el-button>
 
       <div style="position: relative">
         <div class="tips">
@@ -199,204 +197,204 @@
 </template>
 
 <script>
-import { validPhoneNum, validEmail } from "@/utils/validate";
-import { sendSmsCode, verifyCode, register, iso } from "@/api/user";
+import { validPhoneNum, validEmail } from '@/utils/validate'
+import { sendSmsCode, verifyCode, register, iso } from '@/api/user'
 
 export default {
-  name: "Login",
+  name: 'Login',
   data() {
     const validateUsername = (rule, value, callback) => {
       if (this.state === 0) {
         if (!validPhoneNum(value) || validEmail(value)) {
-          callback(new Error("请输入正确的手机号"));
+          callback(new Error('请输入正确的手机号'))
         } else {
-          callback();
+          callback()
         }
       }
-    };
+    }
     const validatePassword = (rule, value, callback) => {
       if (this.state === 0) {
         if (value.length < 6) {
-          callback(new Error("密码至少6个字符"));
+          callback(new Error('密码至少6个字符'))
         } else {
-          callback();
+          callback()
         }
       }
-    };
+    }
     return {
       loginForm: {
-        username: "",
-        password: "",
+        username: '',
+        password: ''
       },
       loginRules: {
         username: [
-          { required: true, trigger: "blur", validator: validateUsername },
+          { required: true, trigger: 'blur', validator: validateUsername }
         ],
         password: [
-          { required: true, trigger: "blur", validator: validatePassword },
-        ],
+          { required: true, trigger: 'blur', validator: validatePassword }
+        ]
       },
       loading: false,
-      passwordType: "password",
+      passwordType: 'password',
       redirect: undefined,
       state: 0,
       showGetCode: false,
       showTimeCount: false,
       timeNum: 60,
-      phoneNum: "",
-      code: "",
-      password: "",
-      dyhCode: "",
-      time: "",
+      phoneNum: '',
+      code: '',
+      password: '',
+      dyhCode: '',
+      time: '',
       dyhUrl:
-        "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-aliyun-vou8sjcjysto19584c/caee8840-27eb-11eb-8a36-ebb87efcf8c0.jpg",
-    };
+        'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-aliyun-vou8sjcjysto19584c/caee8840-27eb-11eb-8a36-ebb87efcf8c0.jpg'
+    }
   },
   watch: {
     $route: {
-      handler: function (route) {
-        this.redirect = route.query && route.query.redirect;
+      handler: function(route) {
+        this.redirect = route.query && route.query.redirect
       },
-      immediate: true,
-    },
+      immediate: true
+    }
   },
   async mounted() {
     const result = await iso({
-      name: "iso",
-    });
-    this.time = result.iso;
+      name: 'iso'
+    })
+    this.time = result.iso
   },
   methods: {
     showPwd() {
-      if (this.passwordType === "password") {
-        this.passwordType = "";
+      if (this.passwordType === 'password') {
+        this.passwordType = ''
       } else {
-        this.passwordType = "password";
+        this.passwordType = 'password'
       }
       this.$nextTick(() => {
-        this.$refs.password.focus();
-      });
+        this.$refs.password.focus()
+      })
     },
     handleLogin() {
-      if (this.loginForm.username === "admin") {
-        this.loading = true;
+      if (this.loginForm.username === 'admin') {
+        this.loading = true
         this.$store
-          .dispatch("user/adminLogin", this.loginForm)
+          .dispatch('user/adminLogin', this.loginForm)
           .then(() => {
-            this.$router.push({ path: "/admin/adminDashboard" });
-            this.loading = false;
+            this.$router.push({ path: '/admin/adminDashboard' })
+            this.loading = false
           })
           .catch((e) => {
-            console.log(e);
-            this.loading = false;
-          });
+            console.log(e)
+            this.loading = false
+          })
       } else {
         this.$refs.loginForm.validate((valid) => {
           if (valid) {
-            this.loading = true;
+            this.loading = true
             this.$store
-              .dispatch("user/login", this.loginForm)
+              .dispatch('user/login', this.loginForm)
               .then(() => {
-                this.$router.push({ path: this.redirect || "/" });
-                this.loading = false;
+                this.$router.push({ path: this.redirect || '/' })
+                this.loading = false
               })
               .catch((e) => {
-                console.log(e);
-                this.loading = false;
-              });
+                console.log(e)
+                this.loading = false
+              })
           } else {
-            console.log("error submit!!");
-            return false;
+            console.log('error submit!!')
+            return false
           }
-        });
+        })
       }
     },
     startReg() {
       if (!/^1\d{10}$/.test(this.phoneNum)) {
-        this.$message.error("手机号码格式不正确");
-        return false;
+        this.$message.error('手机号码格式不正确')
+        return false
       }
       if (this.code.length !== 6) {
-        this.$message.error("验证码不正确");
-        return false;
+        this.$message.error('验证码不正确')
+        return false
       }
       if (this.password.length < 6) {
-        this.$message.error("密码至少6位");
-        return false;
+        this.$message.error('密码至少6位')
+        return false
       }
       const req = {
         mobile: this.phoneNum,
         code: this.code,
-        type: "register",
-      };
+        type: 'register'
+      }
       verifyCode(req).then((response) => {
         if (response.code === 0) {
           const req2 = {
             username: this.phoneNum,
             password: this.password,
-            role: [3],
-          };
+            role: [3]
+          }
           register(req2).then((res) => {
             if (res.code === 0) {
-              console.log(res);
+              console.log(res)
               this.$message({
-                message: "恭喜你，注册成功",
-                type: "success",
-              });
-              this.phoneNum = "";
-              this.password = "";
-              this.code = "";
-              this.showGetCode = false;
-              this.showTimeCount = false;
-              this.state = 0;
+                message: '恭喜你，注册成功',
+                type: 'success'
+              })
+              this.phoneNum = ''
+              this.password = ''
+              this.code = ''
+              this.showGetCode = false
+              this.showTimeCount = false
+              this.state = 0
             }
-          });
+          })
         }
-      });
+      })
     },
     toRegister() {
-      this.state = 1;
+      this.state = 1
     },
     toLogin() {
-      this.state = 0;
+      this.state = 0
     },
     onPhoneNumChange(v) {
       if (!validPhoneNum(v) || !validEmail(v)) {
-        this.showGetCode = true;
+        this.showGetCode = true
       } else {
-        this.showGetCode = false;
+        this.showGetCode = false
       }
     },
     showCode() {
       const req = {
         email: this.phoneNum,
-        type: "sendEmailCode",
-        name: "user-center",
+        type: 'sendEmailCode',
+        name: 'user-center',
         role: [3],
-        my_invite_code: this.dyhCode,
-      };
+        my_invite_code: this.dyhCode
+      }
       sendSmsCode(req).then(({ code, message }) => {
         if (!code) {
           this.$message({
-            message: "验证码已发送",
-            type: "success",
-          });
-          this.showTimeCount = true;
-          var that = this;
-          var timeClock = setInterval(function () {
-            that.timeNum = that.timeNum - 1;
+            message: '验证码已发送',
+            type: 'success'
+          })
+          this.showTimeCount = true
+          var that = this
+          var timeClock = setInterval(function() {
+            that.timeNum = that.timeNum - 1
             if (that.timeNum === 0) {
-              that.showTimeCount = false;
-              clearInterval(timeClock);
+              that.showTimeCount = false
+              clearInterval(timeClock)
             }
-          }, 1000);
+          }, 1000)
         } else {
-          this.$message.error(message);
+          this.$message.error(message)
         }
-      });
-    },
-  },
-};
+      })
+    }
+  }
+}
 </script>
 
 <style lang="scss">

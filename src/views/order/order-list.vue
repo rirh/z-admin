@@ -70,101 +70,101 @@
 </template>
 
 <script>
-import { getDateStr } from "@/utils/common";
-import { getData } from "@/api/order";
-import waves from "@/directive/waves";
-import SimpleTable from "@/components/SimpleTable";
-import Pagination from "@/components/Pagination";
-import { mapGetters } from "vuex";
+import { getDateStr } from '@/utils/common'
+import { getData } from '@/api/order'
+import waves from '@/directive/waves'
+import SimpleTable from '@/components/SimpleTable'
+import Pagination from '@/components/Pagination'
+import { mapGetters } from 'vuex'
 
 export default {
-  name: "OrderList",
+  name: 'OrderList',
   components: { SimpleTable, Pagination },
   directives: { waves },
   filters: {},
   computed: {
-    ...mapGetters(["userId"]),
+    ...mapGetters(['userId'])
   },
   data() {
     return {
       tableKey: 0,
       list: [],
       total: 0,
-      value1: "",
+      value1: '',
       listLoading: true,
       listQuery: {
         page: 1,
         limit: 10,
-        state: "",
-        outTradeNo: "",
+        state: '',
+        outTradeNo: '',
         startDate: getDateStr(new Date().getTime() - 864000000),
-        endDate: getDateStr(new Date().getTime()),
+        endDate: getDateStr(new Date().getTime())
       },
       orderStateOptions: [
-        { key: 0, display_name: "全部" },
-        { key: 1, display_name: "待付款" },
-        { key: 2, display_name: "待发货" },
-        { key: 3, display_name: "待收货" },
-        { key: 4, display_name: "待提货" },
-        { key: 5, display_name: "待成团" },
-        { key: 10, display_name: "已完成" },
-        { key: -1, display_name: "已取消" },
-        { key: -2, display_name: "已关闭" },
+        { key: 0, display_name: '全部' },
+        { key: 1, display_name: '待付款' },
+        { key: 2, display_name: '待发货' },
+        { key: 3, display_name: '待收货' },
+        { key: 4, display_name: '待提货' },
+        { key: 5, display_name: '待成团' },
+        { key: 10, display_name: '已完成' },
+        { key: -1, display_name: '已取消' },
+        { key: -2, display_name: '已关闭' }
       ],
       columns: [
-        { header: "序号", type: "index", width: "100px", dataIndex: "" },
+        { header: '序号', type: 'index', width: '100px', dataIndex: '' },
         {
-          header: "购买商品",
-          type: "orderGoods",
-          width: "",
-          dataIndex: "goodsData",
+          header: '购买商品',
+          type: 'orderGoods',
+          width: '',
+          dataIndex: 'goodsData'
         },
-        { header: "订单号", type: "data", width: "", dataIndex: "outTradeNo" },
+        { header: '订单号', type: 'data', width: '', dataIndex: 'outTradeNo' },
         {
-          header: "购买用户",
-          type: "data",
-          width: "",
-          dataIndex: "shippingMod",
+          header: '购买用户',
+          type: 'data',
+          width: '',
+          dataIndex: 'shippingMod'
         },
         {
-          header: "支付金额",
-          type: "data",
-          width: "",
-          dataIndex: "totalPrice",
+          header: '支付金额',
+          type: 'data',
+          width: '',
+          dataIndex: 'totalPrice'
         },
-        { header: "订单状态", type: "data", width: "", dataIndex: "stateTip" },
-      ],
-    };
+        { header: '订单状态', type: 'data', width: '', dataIndex: 'stateTip' }
+      ]
+    }
   },
   created() {
-    const sta = this.$route.params.sta;
+    const sta = this.$route.params.sta
     if (sta !== undefined) {
-      this.listQuery.state = sta;
+      this.listQuery.state = sta
     }
-    this.getList();
+    this.getList()
   },
   methods: {
     getList() {
-      this.listLoading = true;
+      this.listLoading = true
       getData(this.listQuery).then((response) => {
-        console.log(response);
-        this.list = response.data.records;
-        this.total = response.data.total;
-        this.listLoading = false;
-      });
+        console.log(response)
+        this.list = response.data.records
+        this.total = response.data.total
+        this.listLoading = false
+      })
     },
     handleFilter() {
-      this.listQuery.offset = 0;
-      this.getList();
+      this.listQuery.offset = 0
+      this.getList()
     },
     handleCreate() {
       this.$router.push({
-        name: "Orgadd",
+        name: 'Orgadd',
         params: {
-          opt: "add",
-        },
-      });
-    },
-  },
-};
+          opt: 'add'
+        }
+      })
+    }
+  }
+}
 </script>
