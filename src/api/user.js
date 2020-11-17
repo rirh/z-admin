@@ -2,42 +2,32 @@ import request from '@/utils/request'
 // import { getToken } from '@/utils/auth'
 
 export function login(data) {
-  const req = {
-    url: 'user-center',
-    action: 'login',
-    data: data
-  }
   return request({
-    url: req.url,
+    url: data.name,
     method: 'post',
-    data: req
+    data
   })
 }
 
 export function register(data) {
   const req = {
     url: 'user-center',
-    action: 'register',
+    action: data.action,
     data: data
   }
   return request({
     url: req.url,
     method: 'post',
-    data: req
+    ...req
   })
 }
 
 export function adminLogin(data) {
-  const req = {
-    url: 'account',
-    action: 'adminLogin',
-    check: false,
-    data: data
-  }
+  console.log(data)
   return request({
-    url: '',
+    url: data.name,
     method: 'post',
-    data: req
+    ...data
   })
 }
 

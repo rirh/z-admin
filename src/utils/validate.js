@@ -31,7 +31,6 @@ export function validPhoneNum(str) {
   }
 }
 
-
 /**
  * @param {string} str
  * @returns {Boolean}

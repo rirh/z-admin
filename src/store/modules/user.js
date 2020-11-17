@@ -1,5 +1,4 @@
 import { login, logout, getInfo, adminLogin } from '@/api/user'
-import { getShopData } from '@/api/shop'
 import { getToken, setToken, removeToken, setCookie } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
@@ -8,13 +7,17 @@ const getDefaultState = () => {
     token: getToken(),
     name: '',
     avatar: '',
-    userId: ''
+    userId: '',
+    user: {}
   }
 }
 
 const state = getDefaultState()
 
 const mutations = {
+  UPDATE_USER: (state, payload) => {
+    state.user = payload
+  },
   RESET_STATE: (state) => {
     Object.assign(state, getDefaultState())
   },
@@ -37,19 +40,18 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
+      login({ name: 'user-center', action: 'login', username: username.trim(), password: password }).then(response => {
+        console.log(response)
+        commit('UPDATE_USER', response)
         commit('SET_NAME', response.username)
-        commit('SET_AVATAR', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')
+        commit('SET_AVATAR', response.avatarUrl)
         commit('SET_TOKEN', response.token)
         commit('SET_USER_ID', response.uid)
         setToken(response.token)
         setCookie('userId', response.uid)
         setCookie('userName', response.username)
         setCookie('token', response.token)
-        getShopData({ userId: response.uid }).then(res => {
-          setCookie('shopId', res.data[0]._id)
-          resolve()
-        })
+        resolve()
       }).catch(error => {
         reject(error)
       })
@@ -60,7 +62,8 @@ const actions = {
   adminLogin({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      adminLogin({ username: username.trim(), password: password }).then(response => {
+      debugger
+      adminLogin({ name: 'user-center', action: 'login', username: username.trim(), password: password }).then(response => {
         commit('SET_NAME', response.username)
         commit('SET_AVATAR', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')
         commit('SET_TOKEN', response.token)
@@ -100,7 +103,11 @@ const actions = {
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      logout({}).then(() => {
+      logout({
+        name: 'user-center',
+        action: 'logout',
+        token: getToken()
+      }).then(() => {
         removeToken() // must remove  token  first
         resetRouter()
         commit('RESET_STATE')

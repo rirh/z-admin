@@ -233,31 +233,31 @@ export default {
   },
   methods: {
     getData() {
-      getShopData({}).then(response => {
-        console.log(response)
-        this.shopUrl = response.data[0].data.shopUrl
-        this.adminH5Url = response.data[0].data.adminH5Url
-        this.initData()
-      })
+      // getShopData({}).then(response => {
+      //   console.log(response)
+      //   this.shopUrl = response.data[0].data.shopUrl
+      //   this.adminH5Url = response.data[0].data.adminH5Url
+      //   this.initData()
+      // })
     },
     async initData() {
-      const todoData = await getTodoData({})
-      const goodsData = await getGoodsData({})
-      const orderData = await getOrderData({})
-      const userData = await getUserData({})
-      this.toPayCount = todoData.data.count1
-      this.toSendCount = todoData.data.count2
-      this.toGetCount = todoData.data.count3
-      this.showData = goodsData.data.count1
-      this.hideData = goodsData.data.count2
-      this.nowVisitor = userData.data.count1
-      this.allVisitor = userData.data.count2
-      this.nowOrderUser = userData.data.count3
-      this.allOrderUser = userData.data.count4
-      this.nowOrder = orderData.data.count1
-      this.allOrder = orderData.data.count2
-      this.nowPrice = orderData.data.count3
-      this.allPrice = orderData.data.count3
+      // const todoData = await getTodoData({})
+      // const goodsData = await getGoodsData({})
+      // const orderData = await getOrderData({})
+      // const userData = await getUserData({})
+      // this.toPayCount = todoData.data.count1
+      // this.toSendCount = todoData.data.count2
+      // this.toGetCount = todoData.data.count3
+      // this.showData = goodsData.data.count1
+      // this.hideData = goodsData.data.count2
+      // this.nowVisitor = userData.data.count1
+      // this.allVisitor = userData.data.count2
+      // this.nowOrderUser = userData.data.count3
+      // this.allOrderUser = userData.data.count4
+      // this.nowOrder = orderData.data.count1
+      // this.allOrder = orderData.data.count2
+      // this.nowPrice = orderData.data.count3
+      // this.allPrice = orderData.data.count3
     },
     toAddGoods() {
       this.$router.push({
