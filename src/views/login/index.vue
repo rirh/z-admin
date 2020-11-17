@@ -252,12 +252,6 @@ export default {
         "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-aliyun-vou8sjcjysto19584c/caee8840-27eb-11eb-8a36-ebb87efcf8c0.jpg",
     };
   },
-  async mounted() {
-    const result = await iso({
-      name: "iso",
-    });
-    this.time = result.iso;
-  },
   watch: {
     $route: {
       handler: function (route) {
@@ -265,6 +259,12 @@ export default {
       },
       immediate: true,
     },
+  },
+  async mounted() {
+    const result = await iso({
+      name: "iso",
+    });
+    this.time = result.iso;
   },
   methods: {
     showPwd() {
