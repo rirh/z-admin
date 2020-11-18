@@ -43,44 +43,34 @@
                 <div class="card-body">
                   <div class="body-item">
                     <div class="item-status">
-                      <div class="status-title">
-                        销售中
-                      </div>
+                      <div class="status-title">销售中</div>
                       <div class="big-num">
                         {{ showData }}
                       </div>
                     </div>
                     <div class="item-status">
-                      <div class="status-title">
-                        待上架
-                      </div>
+                      <div class="status-title">待上架</div>
                       <div class="big-num">
                         {{ hideData }}
                       </div>
                     </div>
                     <div class="item-status" @click="toAddGoods()">
-                      <div class="status-title">
-                        新增商品
-                      </div>
-                      <div class="big-num">
-                        +
-                      </div>
+                      <div class="status-title">新增商品</div>
+                      <div class="big-num">+</div>
                     </div>
                   </div>
                 </div>
               </div>
             </el-col>
           </el-row>
-          <el-row :gutter="40" style="margin-top:20px">
+          <el-row :gutter="40" style="margin-top: 20px">
             <el-col :span="12">
               <div class="data-card">
                 <div class="card-header">订单数据</div>
                 <div class="card-body">
                   <div class="body-item">
                     <div class="item-status">
-                      <div class="status-title">
-                        总成交订单数
-                      </div>
+                      <div class="status-title">总成交订单数</div>
                       <div class="big-num">
                         {{ allOrder }}
                       </div>
@@ -90,9 +80,7 @@
                       </div>
                     </div>
                     <div class="item-status">
-                      <div class="status-title">
-                        总成交金额
-                      </div>
+                      <div class="status-title">总成交金额</div>
                       <div class="big-num">
                         {{ allPrice }}
                       </div>
@@ -114,9 +102,7 @@
                 <div class="card-body">
                   <div class="body-item">
                     <div class="item-status">
-                      <div class="status-title">
-                        累计下单用户数
-                      </div>
+                      <div class="status-title">累计下单用户数</div>
                       <div class="big-num">
                         {{ allOrderUser }}
                       </div>
@@ -126,9 +112,7 @@
                       </div>
                     </div>
                     <div class="item-status">
-                      <div class="status-title">
-                        累计访问用户数
-                      </div>
+                      <div class="status-title">累计访问用户数</div>
                       <div class="big-num">
                         {{ allVisitor }}
                       </div>
@@ -157,11 +141,12 @@
             </div>
           </div>
 
-          <el-popover
-            placement="left-start"
-            trigger="hover"
-          >
-            <img class="right-img" style="width:200px;height:200px" :src="shopUrl">
+          <el-popover placement="left-start" trigger="hover">
+            <img
+              class="right-img"
+              style="width: 200px; height: 200px"
+              :src="shopUrl"
+            >
             <el-button slot="reference" class="right-btn">
               <div class="right-item">
                 <div class="item-img">
@@ -175,11 +160,12 @@
             </el-button>
           </el-popover>
 
-          <el-popover
-            placement="left-start"
-            trigger="hover"
-          >
-            <img class="right-img" style="width:200px;height:200px" :src="adminH5Url">
+          <el-popover placement="left-start" trigger="hover">
+            <img
+              class="right-img"
+              style="width: 200px; height: 200px"
+              :src="adminH5Url"
+            >
             <el-button slot="reference" class="right-btn">
               <div class="right-item">
                 <div class="item-img">
@@ -194,21 +180,16 @@
           </el-popover>
         </el-col>
       </el-row>
-
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import { getTodoData, getGoodsData, getOrderData, getUserData, getShopData } from '@/api/dashboard'
+// import { getTodoData, getGoodsData, getOrderData, getUserData, getShopData } from '@/api/dashboard'
 export default {
   name: 'Dashboard',
-  computed: {
-    ...mapGetters([
-      'name'
-    ])
-  },
+
   data() {
     return {
       toPayCount: 0,
@@ -227,6 +208,9 @@ export default {
       adminH5Url: '',
       shopUrl: ''
     }
+  },
+  computed: {
+    ...mapGetters(['name'])
   },
   created: function() {
     this.getData()
@@ -287,82 +271,82 @@ export default {
 .content {
   padding: 32px;
 }
-.data-card{
+.data-card {
   background-color: #fff;
   border-radius: 8px;
   margin-bottom: 24px;
   padding: 32px 32px 40px;
-  .card-header{
+  .card-header {
     margin-bottom: 50px;
     font-size: 20px;
     font-weight: bold;
   }
-  .card-body{
+  .card-body {
     position: relative;
     height: 140px;
-    .body-item{
+    .body-item {
       padding: 6px 0;
       display: flex;
       justify-content: space-between;
-      .item-status{
+      .item-status {
         text-align: center;
         flex-grow: 1;
         position: relative;
-        .status-img{
+        .status-img {
           margin-top: -30px;
           width: 160px;
           height: auto;
         }
-        .status-title{
+        .status-title {
           font-size: 16px;
           padding-right: 16px;
           position: relative;
           display: inline-block;
           cursor: pointer;
         }
-        .big-num{
+        .big-num {
           padding-right: 16px;
           font-size: 32px;
           padding-top: 16px;
           font-weight: 500;
         }
-        .last-data{
+        .last-data {
           margin-left: -10px;
           margin-top: 15px;
           font-size: 14px;
-          color: #7E8081;
-          .add-number{
+          color: #7e8081;
+          .add-number {
             margin-left: 8px;
-            color: #1A1B1C;
+            color: #1a1b1c;
           }
         }
       }
     }
   }
 }
-.right-item{
+.right-item {
   position: relative;
   background-color: #ffffff;
   border-radius: 8px;
   height: 83px;
-  .item-img{
-    float:left;
-    .right-img{
+  .item-img {
+    float: left;
+    .right-img {
       width: 43px;
       height: 43px;
       margin: 20px;
     }
   }
-  .item-tip{
-    float:left;
+  .item-tip {
+    float: left;
     margin-top: 20px;
-    .tip-one{
+    .tip-one {
       text-align: left;
       color: #323233;
       font-size: 16px;
       display: block;
     }
-    .tip-two{
+    .tip-two {
       text-align: left;
       color: #646566;
       font-size: 12px;
@@ -370,11 +354,11 @@ export default {
     }
   }
 }
-.right-btn{
-  padding:0px;
-  width:100%;
-  border-radius:8px;
-  border:0px;
-  margin-top:20px
+.right-btn {
+  padding: 0px;
+  width: 100%;
+  border-radius: 8px;
+  border: 0px;
+  margin-top: 20px;
 }
 </style>

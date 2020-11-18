@@ -1,5 +1,5 @@
 <template>
-  <div :class="{'has-logo':showLogo}">
+  <div :class="{ 'has-logo': showLogo }">
     <logo v-if="showLogo" :collapse="isCollapse" />
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
@@ -12,7 +12,12 @@
         :collapse-transition="false"
         mode="vertical"
       >
-        <sidebar-item v-for="route in permissionRoutes" :key="route.path" :item="route" :base-path="route.path" />
+        <sidebar-item
+          v-for="route in permissionRoutes"
+          :key="route.path"
+          :item="route"
+          :base-path="route.path"
+        />
       </el-menu>
     </el-scrollbar>
   </div>
@@ -32,9 +37,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'sidebar'
-    ]),
+    ...mapGetters(['sidebar']),
     routes() {
       return this.$router.options.routes
     },
@@ -60,18 +63,8 @@ export default {
   created: function() {
     // 处理权限数据
     if (getCookie('userName') !== undefined) {
-      if (getCookie('userName') === 'admin') {
-        for (const item in this.routes) {
-          if (this.routes[item].role === 'admin') {
-            this.permissionRoutes.push(this.routes[item])
-          }
-        }
-      } else {
-        for (const item in this.routes) {
-          if (this.routes[item].role !== 'admin') {
-            this.permissionRoutes.push(this.routes[item])
-          }
-        }
+      for (const item in this.routes) {
+        this.permissionRoutes.push(this.routes[item])
       }
     }
   }

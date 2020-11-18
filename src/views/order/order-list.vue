@@ -82,9 +82,6 @@ export default {
   components: { SimpleTable, Pagination },
   directives: { waves },
   filters: {},
-  computed: {
-    ...mapGetters(['userId'])
-  },
   data() {
     return {
       tableKey: 0,
@@ -135,6 +132,9 @@ export default {
         { header: '订单状态', type: 'data', width: '', dataIndex: 'stateTip' }
       ]
     }
+  },
+  computed: {
+    ...mapGetters(['userId'])
   },
   created() {
     const sta = this.$route.params.sta

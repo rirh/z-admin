@@ -52,7 +52,7 @@ service.interceptors.response.use(
         type: 'error',
         duration: 5 * 1000
       })
-      if (res.code === 401 || res.code === 30202) {
+      if (res.code === 30203 || res.code === 30202 || res.code === 30201) {
         setTimeout(() => {
           store.dispatch('user/resetToken').then(() => {
             location.reload()

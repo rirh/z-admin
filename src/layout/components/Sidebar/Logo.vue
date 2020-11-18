@@ -29,7 +29,7 @@ export default {
   },
   data() {
     return {
-      title: 'admin',
+      title: '管理系统',
       logo: '@/assets/img/logo.png'
     }
   }

@@ -264,46 +264,6 @@ export const constantRoutes = [
       }
     ]
   },
-
-  {
-    path: '/admin',
-    component: Layout,
-    redirect: '/admin',
-    role: 'admin',
-    name: 'Admin',
-    children: [{
-      path: 'adminDashboard',
-      name: 'AdminDashboard',
-      component: () => import('@/views/admin/dashboard/index'),
-      meta: { title: '首页', icon: 'dashboard' }
-    }]
-  },
-  {
-    path: '/adminTemplate',
-    component: Layout,
-    redirect: '/adminTemplate',
-    name: 'AdminTemplate',
-    role: 'admin',
-    meta: { title: '模板', icon: 'el-icon-s-open' },
-    children: [
-      {
-        path: 'adminTemplateList',
-        name: 'AdminTemplateList',
-        component: () => import('@/views/admin/template/template-list'),
-        meta: {
-          title: '模板管理'
-        }
-      },
-      {
-        path: 'adminTemplateEdit',
-        name: 'AdminTemplateEdit',
-        component: () => import('@/views/admin/template/template-edit'),
-        meta: { title: '模板编辑' },
-        hidden: true
-      }
-    ]
-  },
-
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

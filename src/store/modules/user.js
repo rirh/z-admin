@@ -113,7 +113,11 @@ const actions = {
         commit('RESET_STATE')
         resolve()
       }).catch(error => {
-        reject(error)
+        console.log(error)
+        removeToken() // must remove  token  first
+        resetRouter()
+        commit('RESET_STATE')
+        resolve()
       })
     })
   },

@@ -282,7 +282,7 @@ export default {
           this.$store
             .dispatch('user/login', this.loginForm)
             .then(() => {
-              this.$router.push({ path: '/admin/adminDashboard' })
+              this.$router.push({ path: '/dashboard' })
               this.loading = false
             })
             .catch((e) => {
