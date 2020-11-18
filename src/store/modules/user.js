@@ -41,8 +41,8 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ name: 'user-center', action: 'login', username: username.trim(), password: password }).then(response => {
-        console.log(response)
-        commit('UPDATE_USER', response)
+        console.log(response.userInfo)
+        commit('UPDATE_USER', response.userInfo)
         commit('SET_NAME', response.username)
         commit('SET_AVATAR', response.avatarUrl)
         commit('SET_TOKEN', response.token)
@@ -62,7 +62,6 @@ const actions = {
   adminLogin({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      debugger
       adminLogin({ name: 'user-center', action: 'login', username: username.trim(), password: password }).then(response => {
         commit('SET_NAME', response.username)
         commit('SET_AVATAR', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')

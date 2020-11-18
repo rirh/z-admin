@@ -7,14 +7,13 @@
     />
 
     <breadcrumb class="breadcrumb-container" />
-
     <div class="right-menu">
+      <span class="nickname">{{ user.nickName || user.username || "" }}</span>
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <span>{{ user.name }}</span>
           <img
             :src="
-              avatar ||
+              user.avatarUrl ||
                 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'
             "
             class="user-avatar"
@@ -91,6 +90,14 @@ export default {
     float: right;
     height: 100%;
     line-height: 50px;
+    display: flex;
+
+    .nickname {
+      font-size: 12px;
+      color: #666;
+      margin-right: 10px;
+      font-weight: bold;
+    }
 
     &:focus {
       outline: none;

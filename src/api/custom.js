@@ -1,18 +1,20 @@
 import request from '@/utils/request'
-import { getToken, getCookie } from '@/utils/auth'
+import { getToken } from '@/utils/auth'
 
-export function getData(data) {
-  const req = {
-    url: 'account',
-    action: 'query',
-    check: true,
-    uniIdToken: getToken(),
-    shopId: getCookie('shopId'),
-    data: data
-  }
+export function getUserList(data) {
+  data.token = getToken()
   return request({
-    url: '',
+    url: data.name,
     method: 'post',
-    data: req
+    data
   })
 }
+export function DeleteUser(data) {
+  data.token = getToken()
+  return request({
+    url: data.name,
+    method: 'post',
+    data
+  })
+}
+

@@ -234,6 +234,7 @@ export default {
           { required: true, trigger: 'blur', validator: validatePassword }
         ]
       },
+      codeloading: false,
       loading: false,
       passwordType: 'password',
       redirect: undefined,
@@ -343,6 +344,8 @@ export default {
       }
     },
     showCode() {
+      if (this.codeloading) return
+
       const req = {
         email: this.phoneNum,
         type: 'sendEmailCode',
@@ -350,7 +353,9 @@ export default {
         role: [3],
         my_invite_code: this.dyhCode.toUpperCase()
       }
+      this.codeloading = true
       sendSmsCode(req).then(({ code, message }) => {
+        this.codeloading = false
         if (!code) {
           this.$message({
             message: '验证码已发送',
