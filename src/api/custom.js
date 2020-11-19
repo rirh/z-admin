@@ -17,4 +17,48 @@ export function DeleteUser(data) {
     data
   })
 }
+export function bindEmail(data) {
+  data.token = getToken()
+  return request({
+    url: data.name,
+    method: 'post',
+    data
+  })
+}
+
+export function bindMobile(data) {
+  data.token = getToken()
+  return request({
+    url: data.name,
+    method: 'post',
+    data
+  })
+}
+
+export function unbindEmail(data) {
+  data.token = getToken()
+  return request({
+    url: data.name,
+    method: 'post',
+    data
+  })
+}
+
+export function unbindMobile(data) {
+  data.token = getToken()
+  return request({
+    url: data.name,
+    method: 'post',
+    data
+  })
+}
+
+export function updateUser(data) {
+  data.token = getToken()
+  return request({
+    url: data.name,
+    method: 'post',
+    data
+  })
+}
 

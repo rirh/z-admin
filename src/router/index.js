@@ -56,76 +56,76 @@ export const constantRoutes = [
     }]
   },
 
-  {
-    path: '/shop',
-    component: Layout,
-    redirect: '/shop',
-    name: 'Shop',
-    meta: { title: '店铺', icon: 'el-icon-s-shop' },
-    children: [
-      {
-        path: 'pageList',
-        name: 'PageList',
-        component: () => import('@/views/shop/page-list'),
-        meta: { title: '店铺页面' }
-      },
-      {
-        path: 'pageDiy',
-        name: 'PageDiy',
-        component: () => import('@/views/shop/page-diy'),
-        meta: { title: '店铺设计' },
-        hidden: true
-      },
-      {
-        path: 'pageEdit',
-        name: 'PageEdit',
-        component: () => import('@/views/shop/page-edit'),
-        meta: { title: '店铺编辑' },
-        hidden: true
-      },
-      {
-        path: 'tabbarEdit',
-        name: 'TabbarEdit',
-        component: () => import('@/views/shop/tabbar-edit'),
-        meta: { title: '店铺导航' }
-      },
-      {
-        path: 'sourceList',
-        name: 'SourceList',
-        component: () => import('@/views/shop/source-list'),
-        meta: { title: '素材中心' }
-      }
-    ]
-  },
+  // {
+  //   path: '/shop',
+  //   component: Layout,
+  //   redirect: '/shop',
+  //   name: 'Shop',
+  //   meta: { title: '店铺', icon: 'el-icon-s-shop' },
+  //   children: [
+  //     {
+  //       path: 'pageList',
+  //       name: 'PageList',
+  //       component: () => import('@/views/shop/page-list'),
+  //       meta: { title: '店铺页面' }
+  //     },
+  //     {
+  //       path: 'pageDiy',
+  //       name: 'PageDiy',
+  //       component: () => import('@/views/shop/page-diy'),
+  //       meta: { title: '店铺设计' },
+  //       hidden: true
+  //     },
+  //     {
+  //       path: 'pageEdit',
+  //       name: 'PageEdit',
+  //       component: () => import('@/views/shop/page-edit'),
+  //       meta: { title: '店铺编辑' },
+  //       hidden: true
+  //     },
+  //     {
+  //       path: 'tabbarEdit',
+  //       name: 'TabbarEdit',
+  //       component: () => import('@/views/shop/tabbar-edit'),
+  //       meta: { title: '店铺导航' }
+  //     },
+  //     {
+  //       path: 'sourceList',
+  //       name: 'SourceList',
+  //       component: () => import('@/views/shop/source-list'),
+  //       meta: { title: '素材中心' }
+  //     }
+  //   ]
+  // },
 
-  {
-    path: '/goods',
-    component: Layout,
-    redirect: '/goods',
-    name: 'Goods',
-    meta: { title: '商品', icon: 'el-icon-s-goods' },
-    children: [
-      {
-        path: 'goodsList',
-        name: 'GoodsList',
-        component: () => import('@/views/goods/goods-list'),
-        meta: { title: '全部商品' }
-      },
-      {
-        path: 'goodsGroupList',
-        name: 'GoodsGroupList',
-        component: () => import('@/views/goods/goods-group-list'),
-        meta: { title: '商品分组' }
-      },
-      {
-        path: 'goodsEdit',
-        name: 'GoodsEdit',
-        component: () => import('@/views/goods/goods-edit'),
-        meta: { title: '商品编辑' },
-        hidden: true
-      }
-    ]
-  },
+  // {
+  //   path: '/goods',
+  //   component: Layout,
+  //   redirect: '/goods',
+  //   name: 'Goods',
+  //   meta: { title: '商品', icon: 'el-icon-s-goods' },
+  //   children: [
+  //     {
+  //       path: 'goodsList',
+  //       name: 'GoodsList',
+  //       component: () => import('@/views/goods/goods-list'),
+  //       meta: { title: '全部商品' }
+  //     },
+  //     {
+  //       path: 'goodsGroupList',
+  //       name: 'GoodsGroupList',
+  //       component: () => import('@/views/goods/goods-group-list'),
+  //       meta: { title: '商品分组' }
+  //     },
+  //     {
+  //       path: 'goodsEdit',
+  //       name: 'GoodsEdit',
+  //       component: () => import('@/views/goods/goods-edit'),
+  //       meta: { title: '商品编辑' },
+  //       hidden: true
+  //     }
+  //   ]
+  // },
 
   {
     path: '/custom',
@@ -139,13 +139,13 @@ export const constantRoutes = [
         name: 'CustomList',
         component: () => import('@/views/custom/custom-list'),
         meta: { title: '客户管理' }
-      },
-      {
-        path: 'pointList',
-        name: 'PointList',
-        component: () => import('@/views/custom/point-list'),
-        meta: { title: '积分管理' }
       }
+      // {
+      //   path: 'pointList',
+      //   name: 'PointList',
+      //   component: () => import('@/views/custom/point-list'),
+      //   meta: { title: '积分管理' }
+      // }
     ]
   },
 
