@@ -58,6 +58,10 @@
     "> 1%",
     "last 2 versions"
   ],
+  "prettier": {
+    "stylelintIntegration": true,
+    "eslintIntegration": true
+  },
   "engines": {
     "node": ">=8.9",
     "npm": ">= 3.0.0"
