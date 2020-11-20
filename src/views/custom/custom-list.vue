@@ -100,8 +100,7 @@
               "
               v-clipboard:success="clipboardSuccess"
               size="small"
-              >复制链接</el-button
-            >
+            >复制链接</el-button>
           </div>
         </el-form-item>
         <el-form-item>
@@ -125,9 +124,9 @@
 </template>
 
 <script>
-import waves from "@/directive/waves";
-import SimpleTable from "@/components/SimpleTable";
-import Pagination from "@/components/Pagination";
+import waves from '@/directive/waves'
+import SimpleTable from '@/components/SimpleTable'
+import Pagination from '@/components/Pagination'
 import {
   getUserList,
   DeleteUser,
@@ -135,13 +134,13 @@ import {
   bindEmail,
   unbindMobile,
   unbindEmail,
-  updateUser,
-} from "@/api/custom";
-import QRCode from "qrcodejs2";
-import clipboard from "@/directive/clipboard/index.js"; // use clipboard by v-directive
+  updateUser
+} from '@/api/custom'
+import QRCode from 'qrcodejs2'
+import clipboard from '@/directive/clipboard/index.js' // use clipboard by v-directive
 
 export default {
-  name: "CustomList",
+  name: 'CustomList',
   components: { SimpleTable, Pagination },
   directives: { waves, clipboard },
   data() {
@@ -150,228 +149,222 @@ export default {
       total: 0,
       dialogFormVisible: false,
       form: {},
-      formLabelWidth: "120px",
+      formLabelWidth: '120px',
       listLoading: true,
       listQuery: {
         page: 0,
         pageSize: 10,
-        nickName: "",
-        name: "user-center",
-        action: "queryUser",
-        startDate: "",
-        endDate: "",
+        nickName: '',
+        name: 'user-center',
+        action: 'queryUser',
+        startDate: '',
+        endDate: ''
       },
       columns: [
-        { header: "序号", type: "index", width: "50px", dataIndex: "" },
+        { header: '序号', type: 'index', width: '50px', dataIndex: '' },
         {
-          header: "账户",
-          type: "data",
-          width: "240px",
-          dataIndex: "username",
+          header: '账户',
+          type: 'data',
+          width: '240px',
+          dataIndex: 'username'
         },
         {
-          header: "昵称",
-          type: "data",
-          width: "80px",
-          dataIndex: "nickName",
+          header: '昵称',
+          type: 'data',
+          width: '80px',
+          dataIndex: 'nickName'
         },
         {
-          header: "性别",
-          type: "data",
-          width: "80px",
-          dataIndex: "gender",
+          header: '邀请码',
+          type: 'data',
+          width: '75px',
+          dataIndex: 'my_invite_code'
         },
         {
-          header: "邀请码",
-          type: "data",
-          width: "75px",
-          dataIndex: "my_invite_code",
+          header: '权限',
+          type: 'data',
+          width: '50',
+          dataIndex: 'role'
         },
         {
-          header: "权限",
-          type: "data",
-          width: "50",
-          dataIndex: "role",
+          header: '最后一次登录IP',
+          type: 'data',
+          width: '120px',
+          dataIndex: 'last_login_ip'
         },
         {
-          header: "最后一次登录IP",
-          type: "data",
-          width: "120px",
-          dataIndex: "last_login_ip",
+          header: '最后一次登录时间',
+          type: 'datetime',
+          width: '',
+          dataIndex: 'last_login_date'
         },
         {
-          header: "最后一次登录时间",
-          type: "datetime",
-          width: "",
-          dataIndex: "last_login_date",
-        },
-        {
-          header: "注册时间",
-          type: "datetime",
-          width: "",
-          dataIndex: "register_date",
-        },
-      ],
-    };
+          header: '注册时间',
+          type: 'datetime',
+          width: '',
+          dataIndex: 'register_date'
+        }
+      ]
+    }
   },
-  created: function () {
-    this.fetchList();
+  created: function() {
+    this.fetchList()
   },
 
   methods: {
     handleUpdateUser() {
       updateUser({
-        name: "user-center",
-        action: "updateUser",
+        name: 'user-center',
+        action: 'updateUser',
         uid: this.form._id,
         nickName: this.form.nickName,
-        gender: this.form.gender,
+        gender: this.form.gender
       }).then(({ msg }) => {
-        this.dialogFormVisible = false;
+        this.dialogFormVisible = false
         this.$message({
           message: msg,
-          type: "success",
-          duration: 1500,
-        });
-      });
+          type: 'success',
+          duration: 1500
+        })
+      })
     },
     handleUnBindEmail() {
       unbindEmail({
-        name: "user-center",
-        action: "unbindEmail",
+        name: 'user-center',
+        action: 'unbindEmail',
         uid: this.form._id,
-        email: this.form.email,
+        email: this.form.email
       }).then(({ msg }) => {
-        this.form.email_confirmed = 0;
+        this.form.email_confirmed = 0
         this.$message({
           message: msg,
-          type: "success",
-          duration: 1500,
-        });
-      });
+          type: 'success',
+          duration: 1500
+        })
+      })
     },
     handleUnBindMobile() {
       unbindMobile({
-        name: "user-center",
-        action: "unbindMobile",
+        name: 'user-center',
+        action: 'unbindMobile',
         uid: this.form._id,
-        mobile: this.form.mobile,
+        mobile: this.form.mobile
       }).then(({ msg }) => {
-        this.form.mobile_confirmed = 0;
+        this.form.mobile_confirmed = 0
         this.$message({
           message: msg,
-          type: "success",
-          duration: 1500,
-        });
-      });
+          type: 'success',
+          duration: 1500
+        })
+      })
     },
     handleBindEmail() {
       bindEmail({
-        name: "user-center",
-        action: "bindEmail",
+        name: 'user-center',
+        action: 'bindEmail',
         uid: this.form._id,
-        email: this.form.email,
+        email: this.form.email
       }).then(({ msg }) => {
-        this.form.email_confirmed = 1;
+        this.form.email_confirmed = 1
         this.$message({
           message: msg,
-          type: "success",
-          duration: 1500,
-        });
-      });
+          type: 'success',
+          duration: 1500
+        })
+      })
     },
     handleBindMobile() {
       bindMobile({
-        name: "user-center",
-        action: "bindMobile",
+        name: 'user-center',
+        action: 'bindMobile',
         uid: this.form._id,
-        mobile: this.form.mobile,
+        mobile: this.form.mobile
       }).then(({ msg }) => {
-        this.form.mobile_confirmed = 1;
+        this.form.mobile_confirmed = 1
 
         this.$message({
           message: msg,
-          type: "success",
-          duration: 1500,
-        });
-      });
+          type: 'success',
+          duration: 1500
+        })
+      })
     },
     clipboardSuccess() {
       this.$message({
-        message: "已复制",
-        type: "success",
-        duration: 1500,
-      });
+        message: '已复制',
+        type: 'success',
+        duration: 1500
+      })
     },
     handleedit(row) {
-      this.dialogFormVisible = true;
-      this.form = row;
+      this.dialogFormVisible = true
+      this.form = row
       this.$nextTick(() => {
-        document.getElementById("qrcode").innerHTML = "";
+        document.getElementById('qrcode').innerHTML = ''
 
-        new QRCode("qrcode", {
+        new QRCode('qrcode', {
           width: 200, // 设置宽度，单位像素
           height: 200, // 设置高度，单位像素
-          text: `http://join.huzhihui.org.cn?my_invite_code=${row.my_invite_code}`, // 设置二维码内容或跳转地址
-        });
-      });
+          text: `http://join.huzhihui.org.cn?my_invite_code=${row.my_invite_code}` // 设置二维码内容或跳转地址
+        })
+      })
     },
     share() {
       var oQrcode = document
-        .querySelector("#qrcode")
-        .getElementsByTagName("canvas");
-      const a = document.createElement("a");
-      a.href = oQrcode[0].toDataURL("image/png");
-      a.download = `${this.form.username}的邀请码`;
-      a.click();
+        .querySelector('#qrcode')
+        .getElementsByTagName('canvas')
+      const a = document.createElement('a')
+      a.href = oQrcode[0].toDataURL('image/png')
+      a.download = `${this.form.username}的邀请码`
+      a.click()
       this.$message({
-        message: "正在下载",
-        type: "success",
-        duration: 1500,
-      });
+        message: '正在下载',
+        type: 'success',
+        duration: 1500
+      })
     },
     handleremove(row) {
-      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
-        .then(async () => {
+        .then(async() => {
           await DeleteUser({
-            name: "user-center",
-            action: "deleteUser",
-            uid: row._id,
-          });
+            name: 'user-center',
+            action: 'deleteUser',
+            uid: row._id
+          })
           this.$message({
-            type: "success",
-            message: "删除成功!",
-          });
-          this.fetchList();
+            type: 'success',
+            message: '删除成功!'
+          })
+          this.fetchList()
         })
         .catch(() => {
           this.$message({
-            type: "info",
-            message: "已取消删除",
-          });
-        });
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
     },
     fetchList() {
-      this.listLoading = true;
-      console.log(this.listQuery);
+      this.listLoading = true
+      console.log(this.listQuery)
 
       getUserList(this.listQuery).then((response) => {
-        console.log(response);
-        this.list = response.data.data;
-        this.total = response.data.total;
-        this.listLoading = false;
-      });
+        console.log(response)
+        this.list = response.data.data
+        this.total = response.data.total
+        this.listLoading = false
+      })
     },
     handleFilter() {
-      this.listQuery.page = 1;
-      this.fetchList();
-    },
-  },
-};
+      this.listQuery.page = 1
+      this.fetchList()
+    }
+  }
+}
 </script>
 <style lang="scss" scoped>
 .inline-form {
