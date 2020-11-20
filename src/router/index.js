@@ -56,76 +56,76 @@ export const constantRoutes = [
     }]
   },
 
-  {
-    path: '/shop',
-    component: Layout,
-    redirect: '/shop',
-    name: 'Shop',
-    meta: { title: '店铺', icon: 'el-icon-s-shop' },
-    children: [
-      {
-        path: 'pageList',
-        name: 'PageList',
-        component: () => import('@/views/shop/page-list'),
-        meta: { title: '店铺页面' }
-      },
-      {
-        path: 'pageDiy',
-        name: 'PageDiy',
-        component: () => import('@/views/shop/page-diy'),
-        meta: { title: '店铺设计' },
-        hidden: true
-      },
-      {
-        path: 'pageEdit',
-        name: 'PageEdit',
-        component: () => import('@/views/shop/page-edit'),
-        meta: { title: '店铺编辑' },
-        hidden: true
-      },
-      {
-        path: 'tabbarEdit',
-        name: 'TabbarEdit',
-        component: () => import('@/views/shop/tabbar-edit'),
-        meta: { title: '店铺导航' }
-      },
-      {
-        path: 'sourceList',
-        name: 'SourceList',
-        component: () => import('@/views/shop/source-list'),
-        meta: { title: '素材中心' }
-      }
-    ]
-  },
+  // {
+  //   path: '/shop',
+  //   component: Layout,
+  //   redirect: '/shop',
+  //   name: 'Shop',
+  //   meta: { title: '店铺', icon: 'el-icon-s-shop' },
+  //   children: [
+  //     {
+  //       path: 'pageList',
+  //       name: 'PageList',
+  //       component: () => import('@/views/shop/page-list'),
+  //       meta: { title: '店铺页面' }
+  //     },
+  //     {
+  //       path: 'pageDiy',
+  //       name: 'PageDiy',
+  //       component: () => import('@/views/shop/page-diy'),
+  //       meta: { title: '店铺设计' },
+  //       hidden: true
+  //     },
+  //     {
+  //       path: 'pageEdit',
+  //       name: 'PageEdit',
+  //       component: () => import('@/views/shop/page-edit'),
+  //       meta: { title: '店铺编辑' },
+  //       hidden: true
+  //     },
+  //     {
+  //       path: 'tabbarEdit',
+  //       name: 'TabbarEdit',
+  //       component: () => import('@/views/shop/tabbar-edit'),
+  //       meta: { title: '店铺导航' }
+  //     },
+  //     {
+  //       path: 'sourceList',
+  //       name: 'SourceList',
+  //       component: () => import('@/views/shop/source-list'),
+  //       meta: { title: '素材中心' }
+  //     }
+  //   ]
+  // },
 
-  {
-    path: '/goods',
-    component: Layout,
-    redirect: '/goods',
-    name: 'Goods',
-    meta: { title: '商品', icon: 'el-icon-s-goods' },
-    children: [
-      {
-        path: 'goodsList',
-        name: 'GoodsList',
-        component: () => import('@/views/goods/goods-list'),
-        meta: { title: '全部商品' }
-      },
-      {
-        path: 'goodsGroupList',
-        name: 'GoodsGroupList',
-        component: () => import('@/views/goods/goods-group-list'),
-        meta: { title: '商品分组' }
-      },
-      {
-        path: 'goodsEdit',
-        name: 'GoodsEdit',
-        component: () => import('@/views/goods/goods-edit'),
-        meta: { title: '商品编辑' },
-        hidden: true
-      }
-    ]
-  },
+  // {
+  //   path: '/goods',
+  //   component: Layout,
+  //   redirect: '/goods',
+  //   name: 'Goods',
+  //   meta: { title: '商品', icon: 'el-icon-s-goods' },
+  //   children: [
+  //     {
+  //       path: 'goodsList',
+  //       name: 'GoodsList',
+  //       component: () => import('@/views/goods/goods-list'),
+  //       meta: { title: '全部商品' }
+  //     },
+  //     {
+  //       path: 'goodsGroupList',
+  //       name: 'GoodsGroupList',
+  //       component: () => import('@/views/goods/goods-group-list'),
+  //       meta: { title: '商品分组' }
+  //     },
+  //     {
+  //       path: 'goodsEdit',
+  //       name: 'GoodsEdit',
+  //       component: () => import('@/views/goods/goods-edit'),
+  //       meta: { title: '商品编辑' },
+  //       hidden: true
+  //     }
+  //   ]
+  // },
 
   {
     path: '/custom',
@@ -139,116 +139,137 @@ export const constantRoutes = [
         name: 'CustomList',
         component: () => import('@/views/custom/custom-list'),
         meta: { title: '客户管理' }
-      },
-      {
-        path: 'pointList',
-        name: 'PointList',
-        component: () => import('@/views/custom/point-list'),
-        meta: { title: '积分管理' }
       }
+      // {
+      //   path: 'pointList',
+      //   name: 'PointList',
+      //   component: () => import('@/views/custom/point-list'),
+      //   meta: { title: '积分管理' }
+      // }
+    ]
+  },
+  {
+    path: '/letter',
+    component: Layout,
+    redirect: '/letter',
+    name: 'Letter',
+    meta: { title: '信件', icon: 'el-icon-s-promotion' },
+    children: [
+      {
+        path: 'letter-list',
+        name: 'letter-list',
+        component: () => import('@/views/letter/letter-list'),
+        meta: { title: '信件管理' }
+      }
+      // {
+      //   path: 'pointList',
+      //   name: 'PointList',
+      //   component: () => import('@/views/custom/point-list'),
+      //   meta: { title: '积分管理' }
+      // }
     ]
   },
 
-  {
-    path: '/delivery',
-    component: Layout,
-    redirect: '/delivery',
-    name: 'Delivery',
-    meta: { title: '配送', icon: 'el-icon-s-promotion' },
-    children: [
-      {
-        path: 'templateList',
-        name: 'TemplateList',
-        component: () => import('@/views/delivery/template-list'),
-        meta: { title: '配送模板' }
-      },
-      {
-        path: 'templateEdit',
-        name: 'TemplateEdit',
-        component: () => import('@/views/delivery/template-edit'),
-        meta: { title: '配送模板编辑' },
-        hidden: true
-      },
-      {
-        path: 'selfgetList',
-        name: 'SelfgetList',
-        component: () => import('@/views/delivery/selfget-list'),
-        meta: { title: '上门自提' }
-      },
-      {
-        path: 'selfgetEdti',
-        name: 'SelfgetEdit',
-        component: () => import('@/views/delivery/selfget-edit'),
-        meta: { title: '上门自提编辑' },
-        hidden: true
-      }
-    ]
-  },
+  // {
+  //   path: '/delivery',
+  //   component: Layout,
+  //   redirect: '/delivery',
+  //   name: 'Delivery',
+  //   meta: { title: '配送', icon: 'el-icon-s-promotion' },
+  //   children: [
+  //     {
+  //       path: 'templateList',
+  //       name: 'TemplateList',
+  //       component: () => import('@/views/delivery/template-list'),
+  //       meta: { title: '配送模板' }
+  //     },
+  //     {
+  //       path: 'templateEdit',
+  //       name: 'TemplateEdit',
+  //       component: () => import('@/views/delivery/template-edit'),
+  //       meta: { title: '配送模板编辑' },
+  //       hidden: true
+  //     },
+  //     {
+  //       path: 'selfgetList',
+  //       name: 'SelfgetList',
+  //       component: () => import('@/views/delivery/selfget-list'),
+  //       meta: { title: '上门自提' }
+  //     },
+  //     {
+  //       path: 'selfgetEdti',
+  //       name: 'SelfgetEdit',
+  //       component: () => import('@/views/delivery/selfget-edit'),
+  //       meta: { title: '上门自提编辑' },
+  //       hidden: true
+  //     }
+  //   ]
+  // },
 
-  {
-    path: '/marketing',
-    component: Layout,
-    redirect: '/marketing',
-    name: 'Marketing',
-    meta: { title: '营销', icon: 'el-icon-s-ticket' },
-    children: [
-      {
-        path: 'couponList',
-        name: 'CouponList',
-        component: () => import('@/views/marketing/coupon-list'),
-        meta: { title: '优惠券' }
-      },
-      {
-        path: 'couponEdit',
-        name: 'CouponEdit',
-        component: () => import('@/views/marketing/coupon-edit'),
-        meta: { title: '优惠券编辑' },
-        hidden: true
-      },
-      {
-        path: 'pintuanList',
-        name: 'PintuanList',
-        component: () => import('@/views/marketing/pintuan-list'),
-        meta: { title: '拼团' }
-      },
-      {
-        path: 'pintuanEdit',
-        name: 'PintuanEdit',
-        component: () => import('@/views/marketing/pintuan-edit'),
-        meta: { title: '拼团编辑' },
-        hidden: true
-      },
-      {
-        path: 'fenxiaoList',
-        name: 'FenxiaoList',
-        component: () => import('@/views/marketing/fenxiao-list'),
-        meta: { title: '分销' },
-        hidden: true
-      },
-      {
-        path: 'fenxiaoEdit',
-        name: 'FenxiaoEdit',
-        component: () => import('@/views/marketing/fenxiao-edit'),
-        meta: { title: '分销编辑' },
-        hidden: true
-      }
-    ]
-  },
-  {
-    path: '/order',
-    component: Layout,
-    redirect: '/order',
-    name: 'Order',
-    meta: { title: '订单', icon: 'el-icon-s-order' },
-    children: [
-      {
-        path: 'orderList',
-        name: 'OrderList',
-        component: () => import('@/views/order/order-list'),
-        meta: { title: '订单管理' }
-      }
-    ]
-  },
+  // {
+  //   path: '/marketing',
+  //   component: Layout,
+  //   redirect: '/marketing',
+  //   name: 'Marketing',
+  //   meta: { title: '营销', icon: 'el-icon-s-ticket' },
+  //   children: [
+  //     {
+  //       path: 'couponList',
+  //       name: 'CouponList',
+  //       component: () => import('@/views/marketing/coupon-list'),
+  //       meta: { title: '优惠券' }
+  //     },
+  //     {
+  //       path: 'couponEdit',
+  //       name: 'CouponEdit',
+  //       component: () => import('@/views/marketing/coupon-edit'),
+  //       meta: { title: '优惠券编辑' },
+  //       hidden: true
+  //     },
+  //     {
+  //       path: 'pintuanList',
+  //       name: 'PintuanList',
+  //       component: () => import('@/views/marketing/pintuan-list'),
+  //       meta: { title: '拼团' }
+  //     },
+  //     {
+  //       path: 'pintuanEdit',
+  //       name: 'PintuanEdit',
+  //       component: () => import('@/views/marketing/pintuan-edit'),
+  //       meta: { title: '拼团编辑' },
+  //       hidden: true
+  //     },
+  //     {
+  //       path: 'fenxiaoList',
+  //       name: 'FenxiaoList',
+  //       component: () => import('@/views/marketing/fenxiao-list'),
+  //       meta: { title: '分销' },
+  //       hidden: true
+  //     },
+  //     {
+  //       path: 'fenxiaoEdit',
+  //       name: 'FenxiaoEdit',
+  //       component: () => import('@/views/marketing/fenxiao-edit'),
+  //       meta: { title: '分销编辑' },
+  //       hidden: true
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/order',
+  //   component: Layout,
+  //   redirect: '/order',
+  //   name: 'Order',
+  //   meta: { title: '订单', icon: 'el-icon-s-order' },
+  //   children: [
+  //     {
+  //       path: 'orderList',
+  //       name: 'OrderList',
+  //       component: () => import('@/views/order/order-list'),
+  //       meta: { title: '订单管理' }
+  //     }
+  //   ]
+  // },
   {
     path: '/setting',
     component: Layout,
