@@ -8,34 +8,6 @@
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
-      <el-select
-        v-model="listQuery.importance"
-        placeholder="Imp"
-        clearable
-        style="width: 90px"
-        class="filter-item"
-      >
-        <el-option
-          v-for="item in importanceOptions"
-          :key="item"
-          :label="item"
-          :value="item"
-        />
-      </el-select>
-
-      <el-select
-        v-model="listQuery.sort"
-        style="width: 140px"
-        class="filter-item"
-        @change="handleFilter"
-      >
-        <el-option
-          v-for="item in sortOptions"
-          :key="item.key"
-          :label="item.label"
-          :value="item.key"
-        />
-      </el-select>
       <el-button
         v-waves
         class="filter-item"
@@ -45,7 +17,7 @@
       >
         Search
       </el-button>
-      <el-button
+      <!-- <el-button
         class="filter-item"
         style="margin-left: 10px"
         type="primary"
@@ -53,7 +25,7 @@
         @click="handleCreate"
       >
         Add
-      </el-button>
+      </el-button> -->
       <el-button
         v-waves
         :loading="downloadLoading"
@@ -64,7 +36,6 @@
       >
         Export
       </el-button>
-
     </div>
 
     <el-table
@@ -82,9 +53,15 @@
           <span>{{ row.author }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="contant" width="110px" align="center">
+      <el-table-column label="avatar" width="110px" align="center">
         <template slot-scope="{ row }">
-          <span>{{ row.contant }}</span>
+          <img
+            v-if="row.avatar || row.avatarUrl"
+            class="avatar"
+            :src="row.avatar || row.avatarUrl"
+            alt="头像"
+          >
+          <span v-else>-</span>
         </template>
       </el-table-column>
       <el-table-column label="desc" align="left">
@@ -99,23 +76,13 @@
         class-name="small-padding fixed-width"
       >
         <template slot-scope="{ row, $index }">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
-            Edit
-          </el-button>
           <el-button
-            v-if="row.status != 'published'"
+            v-if="row.status != 'deleted'"
             size="mini"
-            type="success"
-            @click="handleModifyStatus(row, 'published')"
+            type="primary"
+            @click="handleUpdate(row, $index)"
           >
-            Publish
-          </el-button>
-          <el-button
-            v-if="row.status != 'draft'"
-            size="mini"
-            @click="handleModifyStatus(row, 'draft')"
-          >
-            Draft
+            修改
           </el-button>
           <el-button
             v-if="row.status != 'deleted'"
@@ -123,7 +90,7 @@
             type="danger"
             @click="handleDelete(row, $index)"
           >
-            Delete
+            删除
           </el-button>
         </template>
       </el-table-column>
@@ -409,13 +376,22 @@ export default {
       })
     },
     handleDelete(row, index) {
-      this.$notify({
-        title: 'Success',
-        message: 'Delete Successfully',
-        type: 'success',
-        duration: 2000
+      request({
+        url: 'letter',
+        method: 'post',
+        data: {
+          id: row._id,
+          action: 'delete'
+        }
+      }).then((response) => {
+        this.$notify({
+          title: '提示',
+          message: '删除成功',
+          type: 'success',
+          duration: 2000
+        })
+        this.getList()
       })
-      this.list.splice(index, 1)
     },
     handleFetchPv(pv) {
       // fetchPv(pv).then(response => {
@@ -425,17 +401,17 @@ export default {
     },
     handleDownload() {
       this.downloadLoading = true
-      // import('@/vendor/Export2Excel').then(excel => {
-      //   const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-      //   const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
-      //   const data = this.formatJson(filterVal)
-      //   excel.export_json_to_excel({
-      //     header: tHeader,
-      //     data,
-      //     filename: 'table-list'
-      //   })
-      //   this.downloadLoading = false
-      // })
+      import('@/vendor/Export2Excel').then((excel) => {
+        const tHeader = ['timestamp', 'Author', 'desc']
+        const filterVal = ['timestamp', 'Author', 'desc']
+        const data = this.formatJson(filterVal)
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: 'table-list'
+        })
+        this.downloadLoading = false
+      })
     },
     formatJson(filterVal) {
       return this.list.map((v) =>
@@ -455,3 +431,10 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.avatar {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+</style>
